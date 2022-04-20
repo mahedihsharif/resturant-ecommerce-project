@@ -1,6 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import equals from "validator/es/lib/equals";
+import isEmail from "validator/es/lib/isEmail";
+import isEmpty from "validator/es/lib/isEmpty";
+import { signup } from "../api/auth";
 import styles from "../styles/Signup.module.css";
+import { showErrorMessage, showSuccessMessage } from "../utils/helpers/message";
+import { showLoading } from "../utils/loading";
 
 const Signup = () => {
   const [formData, setFormData] = React.useState({
@@ -27,18 +33,67 @@ const Signup = () => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
+      errorMsg: "",
+      successMsg: "",
     });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    if (
+      isEmpty(username) ||
+      isEmpty(email) ||
+      isEmpty(password) ||
+      isEmpty(password2)
+    ) {
+      setFormData({
+        ...formData,
+        errorMsg: "All filled required fills",
+      });
+    } else if (!isEmail(email)) {
+      setFormData({
+        ...formData,
+        errorMsg: "Invalid Email",
+      });
+    } else if (!equals(password, password2)) {
+      setFormData({
+        ...formData,
+        errorMsg: "Password don't match.",
+      });
+    } else {
+      const { username, email, password } = formData;
+      const data = { username, email, password };
+      setFormData({
+        ...formData,
+        loading: true,
+      });
+      signup(data)
+        .then((res) => {
+          console.log("Axios signup successfully", res);
+          setFormData({
+            ...formData,
+            username: "",
+            email: "",
+            password: "",
+            password2: "",
+            loading: false,
+            successMsg: res.data.successMsg,
+          });
+        })
+        .catch((err) => {
+          console.log("Axios signup error", err);
+          setFormData({ ...formData, loading: false });
+        });
+    }
   };
 
   return (
     <div className={styles.signupContainer}>
       <div className="row vh-100 px-3">
         <div className="col-md-5 mx-auto align-self-center">
+          {errorMsg && showErrorMessage(errorMsg)}
+          {successMsg && showSuccessMessage(successMsg)}
+          {loading && <div className="text-center pb-3">{showLoading()}</div>}
           <form onSubmit={handleSubmit}>
             {/* USER_NAME */}
 
