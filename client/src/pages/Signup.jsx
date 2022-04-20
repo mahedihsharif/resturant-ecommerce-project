@@ -82,7 +82,11 @@ const Signup = () => {
         })
         .catch((err) => {
           console.log("Axios signup error", err);
-          setFormData({ ...formData, loading: false });
+          setFormData({
+            ...formData,
+            loading: false,
+            errorMsg: err.res.data.errorMessage,
+          });
         });
     }
   };

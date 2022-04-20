@@ -3,12 +3,20 @@ const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
 const MONGO_URL = require("./database/db");
+const authRoutes = require("./routes/auth");
 
+// middleware
 app.use(cors());
 app.use(morgan());
 app.use(express.json());
 
 MONGO_URL();
+
+app.get("/", (req, res) => {
+  res.send("Hitting my server");
+});
+
+app.use("/api/auth/", authRoutes);
 
 const port = process.env.PORT || 5000;
 
