@@ -40,6 +40,9 @@ const Signup = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    //client-side validation
+
     if (
       isEmpty(username) ||
       isEmpty(email) ||
@@ -69,7 +72,6 @@ const Signup = () => {
       });
       signup(data)
         .then((res) => {
-          console.log("Axios signup successfully", res);
           setFormData({
             ...formData,
             username: "",
@@ -81,11 +83,10 @@ const Signup = () => {
           });
         })
         .catch((err) => {
-          console.log("Axios signup error", err);
           setFormData({
             ...formData,
             loading: false,
-            errorMsg: err.res.data.errorMessage,
+            errorMsg: err.res.data.errorMsg,
           });
         });
     }

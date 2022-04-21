@@ -1,0 +1,7 @@
+.signinContainer {
+  background: url(../assets/loginbackground.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.9;
+}
