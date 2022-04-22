@@ -1,5 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { jwtSecret, jwtExpire } = require("../config/keys.js");
 
 //signup controller
 exports.signupController = async (req, res) => {
@@ -27,12 +29,13 @@ exports.signupController = async (req, res) => {
   }
 };
 
-//signup controller
+//signin controller
 exports.signinController = async (req, res) => {
   const { email } = req.body;
 
   try {
     const currentUser = await User.findOne({ email });
+
     !currentUser &&
       res.status(400).json({
         errorMsg: "Invalid Email.",
@@ -45,8 +48,23 @@ exports.signinController = async (req, res) => {
       res.status(400).json({
         errorMsg: "Incorrect password.",
       });
-    const { password, ...others } = currentUser._doc;
-    res.status(200).json(others);
+
+    const payload = {
+      user: {
+        _id: currentUser._id,
+      },
+    };
+
+    jwt.sign(payload, jwtSecret, { expiresIn: jwtExpire }, (err, token) => {
+      if (err) {
+        console.log("jwt token error", err);
+      }
+      const { password, ...others } = currentUser._doc;
+      res.status(200).json({
+        token,
+        user: { ...others },
+      });
+    });
   } catch (err) {
     res.status(500).json({
       errorMsg: "Server Error.",
