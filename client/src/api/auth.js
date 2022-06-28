@@ -13,7 +13,6 @@ export const signup = async (data) => {
 };
 
 //signin api
-
 export const signin = async (data) => {
   const config = {
     headers: {

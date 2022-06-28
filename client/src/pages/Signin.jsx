@@ -1,22 +1,36 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import isEmail from "validator/es/lib/isEmail";
 import isEmpty from "validator/es/lib/isEmpty";
 import { signin } from "../api/auth";
 import styles from "../styles/Signin.module.css";
+import { isAuthenticated, setAuthentication } from "../utils/helpers/auth";
+import { showLoading } from "../utils/helpers/loading";
 import { showErrorMessage } from "../utils/helpers/message";
-import { showLoading } from "../utils/loading";
 
 const Signin = () => {
+  console.log("admin dashboard", isAuthenticated);
+  let navigate = useNavigate();
+  useEffect(() => {
+    redirectToDashboard();
+  }, [navigate]);
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
     errorMsg: false,
     loading: false,
-    redirectToDashboard: false,
   });
 
-  const { email, password, errorMsg, loading, redirectToDashboard } = formData;
+  const { email, password, errorMsg, loading } = formData;
+
+  //I used redirectToDashboard function to stop the repeat of same work.
+  const redirectToDashboard = () => {
+    if (isAuthenticated() && isAuthenticated().role === 1) {
+      navigate("/admin/dashboard");
+    } else if (isAuthenticated() && isAuthenticated().role === 0) {
+      navigate("/user/dashboard");
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -50,13 +64,9 @@ const Signin = () => {
       });
       signin(data)
         .then((res) => {
-          setFormData({
-            ...formData,
-            email: "",
-            password: "",
-            loading: false,
-            redirectToDashboard: true,
-          });
+          setAuthentication(res.data.token, res.data.user);
+          //i used redirectToDashboard function to stop the repeat of same work.
+          redirectToDashboard();
         })
         .catch((err) => {
           setFormData({
@@ -67,7 +77,7 @@ const Signin = () => {
         });
     }
   };
-  console.log(formData);
+
   return (
     <div className={styles.signinContainer}>
       <div className="row vh-100 px-3">

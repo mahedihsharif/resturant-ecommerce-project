@@ -1,14 +1,23 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import equals from "validator/es/lib/equals";
 import isEmail from "validator/es/lib/isEmail";
 import isEmpty from "validator/es/lib/isEmpty";
 import { signup } from "../api/auth";
 import styles from "../styles/Signup.module.css";
+import { isAuthenticated } from "../utils/helpers/auth";
+import { showLoading } from "../utils/helpers/loading";
 import { showErrorMessage, showSuccessMessage } from "../utils/helpers/message";
-import { showLoading } from "../utils/loading";
 
 const Signup = () => {
+  let navigate = useNavigate();
+  useEffect(() => {
+    if (isAuthenticated() && isAuthenticated().role === 1) {
+      navigate("/admin/dashboard");
+    } else {
+      navigate("/user/dashboard");
+    }
+  }, [navigate]);
   const [formData, setFormData] = React.useState({
     username: "",
     email: "",

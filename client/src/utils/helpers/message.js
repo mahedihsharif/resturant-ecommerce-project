@@ -1,5 +1,3 @@
-import React from "react";
-
 export const showErrorMessage = (errMsg) => {
   return (
     <div class="alert alert-danger" role="alert">
