@@ -1,8 +1,14 @@
 import { Fragment } from "react";
-import { Link } from "react-router-dom";
-import { isAuthenticated } from "../utils/helpers/auth";
+import { Link, useNavigate } from "react-router-dom";
+import { isAuthenticated, logOut } from "../utils/helpers/auth";
 
 const Header = () => {
+  let navigate = useNavigate();
+  const handleLogout = () => {
+    logOut(() => {
+      navigate("/signin");
+    });
+  };
   return (
     <>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -73,13 +79,13 @@ const Header = () => {
               {isAuthenticated() && (
                 <Fragment>
                   <li class="nav-item">
-                    <Link
-                      to="/user/userDashboard"
-                      class="nav-link"
+                    <button
+                      class="nav-link btn border-none text-secondary text-decoration-none pl-0"
                       aria-current="page"
+                      onClick={handleLogout}
                     >
                       Logout
-                    </Link>
+                    </button>
                   </li>
                 </Fragment>
               )}

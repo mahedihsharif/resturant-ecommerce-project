@@ -9,7 +9,6 @@ import { showLoading } from "../utils/helpers/loading";
 import { showErrorMessage } from "../utils/helpers/message";
 
 const Signin = () => {
-  console.log("admin dashboard", isAuthenticated);
   let navigate = useNavigate();
   useEffect(() => {
     redirectToDashboard();
@@ -27,8 +26,10 @@ const Signin = () => {
   const redirectToDashboard = () => {
     if (isAuthenticated() && isAuthenticated().role === 1) {
       navigate("/admin/dashboard");
+      window.location.reload();
     } else if (isAuthenticated() && isAuthenticated().role === 0) {
       navigate("/user/dashboard");
+      window.location.reload();
     }
   };
 
