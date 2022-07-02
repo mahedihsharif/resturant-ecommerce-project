@@ -68,11 +68,20 @@ const Signin = () => {
           redirectToDashboard();
         })
         .catch((err) => {
-          setFormData({
-            ...formData,
-            loading: false,
-            errorMsg: err.res.data.errorMsg,
-          });
+          console.log(err.errorMessage);
+          if (err.response) {
+            return setFormData({
+              ...formData,
+              loading: false,
+              errorMsg: err.response.data.errorMessage,
+            });
+          } else {
+            setFormData({
+              ...formData,
+              loading: false,
+              errorMsg: err.error,
+            });
+          }
         });
     }
   };

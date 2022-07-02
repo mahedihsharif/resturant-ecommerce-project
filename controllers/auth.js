@@ -10,21 +10,21 @@ exports.signupController = async (req, res) => {
     const user = await User.findOne({ email });
     if (user) {
       res.status(400).json({
-        errorMsg: "Email already exists",
+        errorMessage: "Email already exists",
       });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = await new User({
+    await new User({
       username: username,
       email: email,
       password: hashedPassword,
     }).save();
     res.status(200).json({
-      successMsg: "Registration Successfull, Please Login.",
+      successMessage: "Registration Successfull, Please Login.",
     });
   } catch (err) {
     res.status(500).json({
-      errorMsg: "Server Failed, Please try again.",
+      errorMessage: "Server Failed, Please try again.",
     });
   }
 };
@@ -35,19 +35,21 @@ exports.signinController = async (req, res) => {
 
   try {
     const currentUser = await User.findOne({ email });
-
-    !currentUser &&
-      res.status(400).json({
-        errorMsg: "Invalid Email.",
+    if (!currentUser) {
+      return res.status(400).json({
+        errorMessage: "Incorrect Email.",
       });
+    }
+
     const currentPassword = await bcrypt.compare(
       req.body.password,
       currentUser.password
     );
-    !currentPassword &&
-      res.status(400).json({
-        errorMsg: "Incorrect password.",
+    if (!currentPassword) {
+      return res.status(400).json({
+        errorMessage: "Incorrect password.",
       });
+    }
 
     const payload = {
       user: {
@@ -67,7 +69,7 @@ exports.signinController = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      errorMsg: "Server Error.",
+      errorMessage: "Server Error.",
     });
   }
 };

@@ -8,9 +8,19 @@ export const signup = async (data) => {
       "Content-Type": "application/json",
     },
   };
-  const res = await axios.post("/api/auth/signup", data, config);
+  const res = await axios.post(
+    "http://localhost:5000/api/auth/signup",
+    data,
+    config
+  );
   return res;
 };
+
+// function throwObjWithStacktrace() {
+//   const someError = { statusCode: 500 };
+//   Error.captureStackTrace(someError);
+//   throw someError;
+// }
 
 //signin api
 export const signin = async (data) => {
@@ -19,6 +29,10 @@ export const signin = async (data) => {
       "Content-Type": "application/json",
     },
   };
-  const res = await axios.post("/api/auth/signin", data, config);
+  const res = await axios.post(
+    "http://localhost:5000/api/auth/signin",
+    data,
+    config
+  );
   return res;
 };

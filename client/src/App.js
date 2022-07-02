@@ -1,6 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import Header from "./components/Header";
+import AdminRoute from "./components/PrivateRoute/AdminRoute";
+import UserRoute from "./components/PrivateRoute/UserRoute";
 import AdminDashboard from "./Dashboard/AdminDashboard/AdminDashboard";
 import UserDashboard from "./Dashboard/UserDashboard/UserDashboard";
 import Home from "./pages/Home";
@@ -15,8 +17,22 @@ function App() {
         <Route exact path="/" element={<Home />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/user/dashboard" element={<UserDashboard />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route
+          path="/user/dashboard"
+          element={
+            <UserRoute>
+              <UserDashboard />
+            </UserRoute>
+          }
+        />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <AdminRoute>
+              <AdminDashboard />
+            </AdminRoute>
+          }
+        />
         <Route path="/notfound" element={<NotFound />} />
       </Routes>
     </>

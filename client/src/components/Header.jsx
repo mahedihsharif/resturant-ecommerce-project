@@ -33,16 +33,17 @@ const Header = () => {
                 <Fragment>
                   <li class="nav-item">
                     <Link to="/" class="nav-link" aria-current="page">
-                      Home
+                      <i class="fa-solid fa-house-chimney"></i> Home
                     </Link>
                   </li>
                   <li class="nav-item">
                     <Link to="/signup" class="nav-link" aria-current="page">
-                      Signup
+                      <i class="fa-solid fa-pen-to-square"></i> Signup
                     </Link>
                   </li>
                   <li class="nav-item">
                     <Link to="/signin" class="nav-link">
+                      <i class="fa-solid fa-arrow-right-from-bracket"></i>{" "}
                       Signin
                     </Link>
                   </li>
@@ -57,7 +58,7 @@ const Header = () => {
                       class="nav-link"
                       aria-current="page"
                     >
-                      Dashboard
+                      <i class="fa-solid fa-house-chimney-user"></i> Dashboard
                     </Link>
                   </li>
                 </Fragment>
@@ -71,7 +72,7 @@ const Header = () => {
                       class="nav-link"
                       aria-current="page"
                     >
-                      Dashboard
+                      <i class="fa-solid fa-house-chimney-user"></i> Dashboard
                     </Link>
                   </li>
                 </Fragment>
@@ -84,6 +85,7 @@ const Header = () => {
                       aria-current="page"
                       onClick={handleLogout}
                     >
+                      <i class="fa-solid fa-arrow-right-from-bracket"></i>{" "}
                       Logout
                     </button>
                   </li>
