@@ -1,16 +1,42 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import isEmpty from "validator/es/lib/isEmpty";
 import { createCategory } from "../../api/category";
+import { showLoading } from "../../utils/helpers/loading";
+import {
+  showErrorMessage,
+  showSuccessMessage,
+} from "../../utils/helpers/message";
 
 const Modal = () => {
   const [category, setCategory] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const handleCategory = (e) => {
+    setErrorMsg("");
+    setSuccessMsg("");
     setCategory(e.target.value);
   };
 
   const handleCategorySubmit = (e) => {
     e.preventDefault();
-    const { data } = category;
-    createCategory(data);
+    if (isEmpty(category)) {
+      setErrorMsg("Please Enter a Category!");
+    } else {
+      const data = { category };
+
+      setLoading(true);
+      createCategory(data)
+        .then((res) => {
+          setLoading(false);
+          setSuccessMsg(res.data.successMessage);
+        })
+        .catch((err) => {
+          setLoading(false);
+          setErrorMsg(err.response.data.errorMessage);
+        });
+    }
   };
 
   return (
@@ -36,15 +62,23 @@ const Modal = () => {
               ></button>
             </div>
             <div className="modal-body">
-              <label htmlFor="" className="text-secondary my-2">
-                Category
-              </label>
-              <input
-                type="text"
-                className="form-control"
-                value={category}
-                onChange={handleCategory}
-              />
+              {errorMsg && showErrorMessage(errorMsg)}
+              {successMsg && showSuccessMessage(successMsg)}
+              {loading ? (
+                showLoading()
+              ) : (
+                <Fragment>
+                  <label htmlFor="" className="text-secondary my-2">
+                    Category
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={category}
+                    onChange={handleCategory}
+                  />
+                </Fragment>
+              )}
             </div>
             <div className="modal-footer">
               <button

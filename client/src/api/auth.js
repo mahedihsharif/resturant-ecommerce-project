@@ -1,4 +1,5 @@
 import axios from "axios";
+import { httpRequest } from "../httpRequest";
 
 //signin api
 
@@ -9,18 +10,12 @@ export const signup = async (data) => {
     },
   };
   const res = await axios.post(
-    "http://localhost:5000/api/auth/signup",
+    `${httpRequest.url}/api/auth/signup`,
     data,
     config
   );
   return res;
 };
-
-// function throwObjWithStacktrace() {
-//   const someError = { statusCode: 500 };
-//   Error.captureStackTrace(someError);
-//   throw someError;
-// }
 
 //signin api
 export const signin = async (data) => {
@@ -30,7 +25,7 @@ export const signin = async (data) => {
     },
   };
   const res = await axios.post(
-    "http://localhost:5000/api/auth/signin",
+    `${httpRequest.url}/api/auth/signin`,
     data,
     config
   );
