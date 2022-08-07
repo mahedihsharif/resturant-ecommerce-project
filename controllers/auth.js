@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { jwtSecret, jwtExpire } = require("../config/keys.js");
+const { jwtSecret, jwtExpire } = require("../config/keys");
 
 //signup controller
 exports.signupController = async (req, res) => {
@@ -54,6 +54,9 @@ exports.signinController = async (req, res) => {
     const payload = {
       user: {
         _id: currentUser._id,
+        username: currentUser.username,
+        email: currentUser.email,
+        role: currentUser.role,
       },
     };
 

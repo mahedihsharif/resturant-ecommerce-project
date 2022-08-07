@@ -1,4 +1,6 @@
-import Modal from "../../components/Shared/Modal";
+import { Fragment } from "react";
+import AddCategoryModal from "../../components/Modal/AddCategoryModal";
+import AddFoodModal from "../../components/Modal/AddFoodModal";
 
 const AdminSection = () => {
   return (
@@ -17,7 +19,11 @@ const AdminSection = () => {
             </div>
 
             <div className="col-md-4 my-3">
-              <button className="btn btn-outline-warning btn-block w-100">
+              <button
+                className="btn btn-outline-warning btn-block w-100"
+                data-bs-toggle="modal"
+                data-bs-target="#addFoodModal"
+              >
                 <i className="fas fa-plus"></i> Add Food
               </button>
             </div>
@@ -31,7 +37,10 @@ const AdminSection = () => {
         </div>
       </div>
 
-      <Modal />
+      <Fragment>
+        <AddCategoryModal />
+        <AddFoodModal />
+      </Fragment>
     </>
   );
 };
